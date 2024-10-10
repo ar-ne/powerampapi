@@ -1,0 +1,23 @@
+jdk:
+  - openjdk17
+before_install:
+  - sdk install java 17.0.2-open
+  - sdk use java 17.0.2-open
+  - |
+    sed -i '1,3c\
+    plugins {\
+        id '\''com.android.library'\''\
+        id '\''maven-publish'\''\
+    }\
+    project.afterEvaluate {\
+        publishing {\
+            publications {\
+                libraryProject(MavenPublication) {\
+                    setGroupId project.findProperty('\''group'\'')\
+                    setArtifactId '\''powerampapilib'\''\
+                    version project.findProperty('\''version'\'')\
+                    artifact bundleReleaseAar\
+                }\
+            }\
+        }\
+    }' poweramp_api_lib/build.gradle
